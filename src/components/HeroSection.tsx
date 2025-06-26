@@ -18,15 +18,15 @@ const HeroSection = ({ onOpenAuth }: HeroSectionProps) => {
 
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-6 animate-fade-in-up">
-            <span className="gradient-text floating-text">Connecting Hearts,</span>
+            <span className="gradient-text floating-text">Where Love</span>
             <br />
-            <span className="text-gray-700">Feeding Pets</span>
+            <span className="gradient-text floating-text">Meets Leftovers</span>
           </h1>
 
           {/* Subheading */}
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in-up">
-            Bridge the gap between restaurants with leftover food and loving pet owners. 
-            <span className="text-wynOrange-600 font-semibold"> Reduce waste, spread love, and nourish our furry friends</span> – one meal at a time.
+            Transform restaurant remnants into precious meals for beloved pets. 
+            <span className="text-wynOrange-600 font-semibold"> Join our community of caring pet parents and eco-conscious restaurants</span> making tails wag and hearts happy! 💛
           </p>
 
           {/* Stats */}
