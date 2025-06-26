@@ -1,12 +1,36 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from "react";
+import Header from "@/components/Header";
+import HeroSection from "@/components/HeroSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import FoodCategories from "@/components/FoodCategories";
+import HowItWorks from "@/components/HowItWorks";
+import Footer from "@/components/Footer";
+import AuthModal from "@/components/AuthModal";
 
 const Index = () => {
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+
+  const openAuth = (mode: 'login' | 'signup') => {
+    setAuthMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-wynGreen-50 via-white to-wynOrange-50">
+      <Header onOpenAuth={openAuth} />
+      <HeroSection onOpenAuth={openAuth} />
+      <FeaturesSection />
+      <FoodCategories />
+      <HowItWorks />
+      <Footer />
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)}
+        mode={authMode}
+        onSwitchMode={setAuthMode}
+      />
     </div>
   );
 };
