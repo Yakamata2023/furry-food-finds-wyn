@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,8 +17,8 @@ const Donation = () => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
   const donationMessages = [
-    "Save hungry pets with $5 today",
-    "Your dollar rescues abandoned animals daily",
+    "Save hungry pets with ₦1,000 today",
+    "Your donation rescues abandoned animals daily",
     "Feed starving pets, donate now please",
     "Homeless pets starve without your help",
     "One donation saves countless furry lives"
@@ -34,7 +35,7 @@ const Donation = () => {
     return () => clearInterval(interval);
   }, [donationMessages.length]);
 
-  const predefinedAmounts = [5, 10, 25, 50, 100, 250];
+  const predefinedAmounts = [1000, 2000, 3000, 4000, 5000, 6000];
 
   const handlePaystackPayment = () => {
     const amount = selectedAmount || parseFloat(customAmount);
@@ -86,14 +87,33 @@ const Donation = () => {
     <div className="min-h-screen bg-gradient-to-br from-wynGreen-50 via-white to-wynOrange-50">
       <Header onOpenAuth={() => {}} />
       
-      {/* Single Floating Donation Message */}
+      {/* Starry Background for Floating Messages */}
       <div className="fixed top-20 left-0 right-0 z-40 pointer-events-none">
-        <div className="container mx-auto px-4 text-center">
-          <div
-            key={currentMessageIndex}
-            className="floating-text text-lg font-bold text-wynGreen-600 animate-bounce-gentle opacity-80"
-          >
-            💝 {donationMessages[currentMessageIndex]} 💝
+        <div className="relative bg-black bg-opacity-90 py-4 overflow-hidden">
+          {/* Twinkling Stars */}
+          <div className="absolute inset-0">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${2 + Math.random() * 2}s`
+                }}
+              />
+            ))}
+          </div>
+          
+          {/* Floating Message */}
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <div
+              key={currentMessageIndex}
+              className="floating-text text-lg font-bold text-white animate-bounce-gentle"
+            >
+              💝 {donationMessages[currentMessageIndex]} 💝
+            </div>
           </div>
         </div>
       </div>
@@ -138,7 +158,7 @@ const Donation = () => {
                         }}
                         className="h-12"
                       >
-                        ₦{amount}
+                        ₦{amount.toLocaleString()}
                       </Button>
                     ))}
                   </div>
@@ -224,16 +244,16 @@ const Donation = () => {
                   </div>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">₦5 feeds</span>
-                      <span className="font-bold text-wynGreen-600">1 pet for a day</span>
+                      <span className="text-gray-600">₦1,000 feeds</span>
+                      <span className="font-bold text-wynGreen-600">5 pets for a day</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">₦25 feeds</span>
-                      <span className="font-bold text-wynGreen-600">5 pets for a week</span>
+                      <span className="text-gray-600">₦3,000 feeds</span>
+                      <span className="font-bold text-wynGreen-600">15 pets for a week</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-600">₦100 feeds</span>
-                      <span className="font-bold text-wynGreen-600">20 pets for a month</span>
+                      <span className="text-gray-600">₦5,000 feeds</span>
+                      <span className="font-bold text-wynGreen-600">25 pets for a month</span>
                     </div>
                   </div>
                 </CardContent>
@@ -241,23 +261,27 @@ const Donation = () => {
 
               <Card className="shadow-lg bg-gradient-to-br from-wynGreen-50 to-wynOrange-50">
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">Why Donate?</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-4">Why Choose WYN Remnants?</h3>
                   <ul className="text-left space-y-2 text-gray-700">
                     <li className="flex items-start">
-                      <span className="text-wynGreen-500 mr-2">•</span>
-                      Help reduce food waste from restaurants
+                      <span className="text-wynGreen-500 mr-2">💚</span>
+                      Transform food waste into life-saving meals for hungry animals
                     </li>
                     <li className="flex items-start">
-                      <span className="text-wynGreen-500 mr-2">•</span>
-                      Provide nutritious meals to hungry pets
+                      <span className="text-wynGreen-500 mr-2">🐕</span>
+                      Give abandoned and stray pets a chance at survival and happiness
                     </li>
                     <li className="flex items-start">
-                      <span className="text-wynGreen-500 mr-2">•</span>
-                      Support sustainable community initiatives
+                      <span className="text-wynGreen-500 mr-2">🌍</span>
+                      Protect our planet by reducing restaurant food waste significantly
                     </li>
                     <li className="flex items-start">
-                      <span className="text-wynGreen-500 mr-2">•</span>
-                      Create positive environmental impact
+                      <span className="text-wynGreen-500 mr-2">❤️</span>
+                      Build a compassionate community where every life matters
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-wynGreen-500 mr-2">🌱</span>
+                      Create sustainable solutions for environmental conservation
                     </li>
                   </ul>
                 </CardContent>
