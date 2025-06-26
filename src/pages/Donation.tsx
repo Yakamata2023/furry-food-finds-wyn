@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
@@ -14,6 +13,7 @@ const Donation = () => {
     name: "",
     phone: ""
   });
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
   const donationMessages = [
     "Save hungry pets with $5 today",
@@ -22,6 +22,17 @@ const Donation = () => {
     "Homeless pets starve without your help",
     "One donation saves countless furry lives"
   ];
+
+  // Cycle through messages every 7 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMessageIndex((prevIndex) => 
+        (prevIndex + 1) % donationMessages.length
+      );
+    }, 7000);
+
+    return () => clearInterval(interval);
+  }, [donationMessages.length]);
 
   const predefinedAmounts = [5, 10, 25, 50, 100, 250];
 
@@ -75,23 +86,15 @@ const Donation = () => {
     <div className="min-h-screen bg-gradient-to-br from-wynGreen-50 via-white to-wynOrange-50">
       <Header onOpenAuth={() => {}} />
       
-      {/* Floating Donation Messages */}
+      {/* Single Floating Donation Message */}
       <div className="fixed top-20 left-0 right-0 z-40 pointer-events-none">
-        <div className="container mx-auto px-4">
-          {donationMessages.map((message, index) => (
-            <div
-              key={index}
-              className={`floating-text text-lg font-bold text-wynGreen-600 mb-2 animate-bounce-gentle opacity-80 ${
-                index % 2 === 0 ? 'text-left' : 'text-right'
-              }`}
-              style={{
-                animationDelay: `${index * 0.5}s`,
-                animationDuration: `${3 + index * 0.2}s`
-              }}
-            >
-              💝 {message} 💝
-            </div>
-          ))}
+        <div className="container mx-auto px-4 text-center">
+          <div
+            key={currentMessageIndex}
+            className="floating-text text-lg font-bold text-wynGreen-600 animate-bounce-gentle opacity-80"
+          >
+            💝 {donationMessages[currentMessageIndex]} 💝
+          </div>
         </div>
       </div>
 
