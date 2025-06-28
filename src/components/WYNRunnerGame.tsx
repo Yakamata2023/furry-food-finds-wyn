@@ -20,7 +20,7 @@ interface Coin extends GameObject {
 
 const WYNRunnerGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const gameLoopRef = useRef<number>();
+  const gameLoopRef = useRef<NodeJS.Timeout | undefined>();
   const [gameState, setGameState] = useState<'menu' | 'playing' | 'paused' | 'gameOver'>('menu');
   const [score, setScore] = useState(0);
   const [wynKoins, setWynKoins] = useState(0);
