@@ -1,6 +1,6 @@
-
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, LogOut, User } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface HeaderProps {
@@ -8,6 +8,12 @@ interface HeaderProps {
 }
 
 const Header = ({ onOpenAuth }: HeaderProps) => {
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   return (
     <header className="bg-white/80 backdrop-blur-md border-b border-wynGreen-100 sticky top-0 z-40">
       <div className="container mx-auto px-4 py-4">
@@ -42,19 +48,41 @@ const Header = ({ onOpenAuth }: HeaderProps) => {
                 💝 Donate Now
               </Button>
             </Link>
-            <Button 
-              variant="ghost" 
-              onClick={() => onOpenAuth('login')}
-              className="text-wynGreen-700 hover:text-wynGreen-800"
-            >
-              Login
-            </Button>
-            <Button 
-              onClick={() => onOpenAuth('signup')}
-              className="bg-gradient-to-r from-wynGreen-500 to-wynOrange-500 hover:from-wynGreen-600 hover:to-wynOrange-600 text-white"
-            >
-              Sign Up
-            </Button>
+            
+            {user ? (
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <User className="w-4 h-4" />
+                  <span>{user.email}</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  onClick={handleSignOut}
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button 
+                    variant="ghost" 
+                    className="text-wynGreen-700 hover:text-wynGreen-800"
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button 
+                    className="bg-gradient-to-r from-wynGreen-500 to-wynOrange-500 hover:from-wynGreen-600 hover:to-wynOrange-600 text-white"
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

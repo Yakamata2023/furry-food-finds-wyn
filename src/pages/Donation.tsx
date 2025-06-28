@@ -46,9 +46,9 @@ const Donation = () => {
       return;
     }
 
-    // Initialize Paystack payment
+    // Initialize Paystack payment with live key
     const handler = (window as any).PaystackPop.setup({
-      key: 'pk_test_your_paystack_public_key', // Replace with your Paystack public key
+      key: 'pk_live_a0cb5a5cc784ddc195e646d6473f48bed719ba86', // Live public key
       email: donorInfo.email || 'anonymous@wynremnants.com',
       amount: amount * 100, // Paystack expects amount in kobo
       currency: 'NGN',
