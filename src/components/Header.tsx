@@ -1,7 +1,6 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Heart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface HeaderProps {
@@ -9,10 +8,8 @@ interface HeaderProps {
 }
 
 const Header = ({ onOpenAuth }: HeaderProps) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   return (
-    <header className="bg-white/80 backdrop-blur-md border-b border-wynGreen-100 sticky top-0 z-50">
+    <header className="bg-white/80 backdrop-blur-md border-b border-wynGreen-100 sticky top-0 z-40">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -59,51 +56,7 @@ const Header = ({ onOpenAuth }: HeaderProps) => {
               Sign Up
             </Button>
           </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-4 pt-4">
-              <a href="/#features" className="text-gray-700 hover:text-wynGreen-600 transition-colors">Features</a>
-              <a href="/#how-it-works" className="text-gray-700 hover:text-wynGreen-600 transition-colors">How It Works</a>
-              <a href="/#categories" className="text-gray-700 hover:text-wynGreen-600 transition-colors">Food Types</a>
-              <Link to="/donate" className="text-wynOrange-600 hover:text-wynOrange-700 font-semibold transition-colors animate-bounce-gentle">
-                💝 Donate
-              </Link>
-              <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
-                <Link to="/donate">
-                  <Button 
-                    className="w-full justify-start bg-gradient-to-r from-wynOrange-500 to-red-500 text-white animate-bounce-gentle"
-                  >
-                    💝 Donate Now
-                  </Button>
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  onClick={() => onOpenAuth('login')}
-                  className="justify-start text-wynGreen-700"
-                >
-                  Login
-                </Button>
-                <Button 
-                  onClick={() => onOpenAuth('signup')}
-                  className="justify-start bg-gradient-to-r from-wynGreen-500 to-wynOrange-500 text-white"
-                >
-                  Sign Up
-                </Button>
-              </div>
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );

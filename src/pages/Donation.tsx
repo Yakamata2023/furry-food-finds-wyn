@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Heart, DollarSign, PawPrint, Shield } from "lucide-react";
+import RetractableMenu from "@/components/RetractableMenu";
+import { Heart, PawPrint, Shield } from "lucide-react";
+import { Banknote } from "lucide-react";
 
 const Donation = () => {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
@@ -18,7 +20,7 @@ const Donation = () => {
 
   const donationMessages = [
     "Save hungry pets with ₦1,000 today",
-    "Your donation rescues abandoned animals daily",
+    "Your donation rescues abandoned animals daily", 
     "Feed starving pets, donate now please",
     "Homeless pets starve without your help",
     "One donation saves countless furry lives"
@@ -43,16 +45,11 @@ const Donation = () => {
       alert("Please select or enter a valid donation amount");
       return;
     }
-    
-    if (!donorInfo.email || !donorInfo.name) {
-      alert("Please fill in your email and name");
-      return;
-    }
 
     // Initialize Paystack payment
     const handler = (window as any).PaystackPop.setup({
       key: 'pk_test_your_paystack_public_key', // Replace with your Paystack public key
-      email: donorInfo.email,
+      email: donorInfo.email || 'anonymous@wynremnants.com',
       amount: amount * 100, // Paystack expects amount in kobo
       currency: 'NGN',
       ref: 'WYN_' + Math.floor((Math.random() * 1000000000) + 1),
@@ -61,18 +58,17 @@ const Donation = () => {
           {
             display_name: "Donor Name",
             variable_name: "donor_name",
-            value: donorInfo.name
+            value: donorInfo.name || "Anonymous"
           },
           {
             display_name: "Phone",
             variable_name: "phone",
-            value: donorInfo.phone
+            value: donorInfo.phone || "Not provided"
           }
         ]
       },
       callback: function(response: any) {
         alert('Payment successful! Transaction ref: ' + response.reference);
-        // Here you would typically send the transaction details to your backend
         console.log('Payment successful:', response);
       },
       onClose: function() {
@@ -85,6 +81,7 @@ const Donation = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-wynGreen-50 via-white to-wynOrange-50">
+      <RetractableMenu />
       <Header onOpenAuth={() => {}} />
       
       {/* Starry Background for Floating Messages */}
@@ -138,7 +135,7 @@ const Donation = () => {
             <Card className="shadow-xl">
               <CardContent className="p-8">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <DollarSign className="w-6 h-6 mr-2 text-wynGreen-500" />
+                  <Banknote className="w-6 h-6 mr-2 text-wynGreen-500" />
                   Make a Donation
                 </h2>
 
@@ -170,7 +167,7 @@ const Donation = () => {
                     Or Enter Custom Amount (₦)
                   </label>
                   <input
-                    type="number"
+                    type="number" 
                     value={customAmount}
                     onChange={(e) => {
                       setCustomAmount(e.target.value);
@@ -181,30 +178,33 @@ const Donation = () => {
                   />
                 </div>
 
-                {/* Donor Information */}
+                {/* Donor Information - Now Optional */}
                 <div className="space-y-4 mb-6">
+                  <p className="text-sm text-gray-600 mb-3">
+                    Donor information is optional. You can donate anonymously.
+                  </p>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name *
+                      Full Name (Optional)
                     </label>
                     <input
                       type="text"
                       value={donorInfo.name}
                       onChange={(e) => setDonorInfo({...donorInfo, name: e.target.value})}
+                      placeholder="Enter your name or leave blank for anonymous"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-wynGreen-500 focus:border-transparent"
-                      required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
+                      Email Address (Optional)
                     </label>
                     <input
                       type="email"
                       value={donorInfo.email}
                       onChange={(e) => setDonorInfo({...donorInfo, email: e.target.value})}
+                      placeholder="Enter your email or leave blank"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-wynGreen-500 focus:border-transparent"
-                      required
                     />
                   </div>
                   <div>
@@ -215,6 +215,7 @@ const Donation = () => {
                       type="tel"
                       value={donorInfo.phone}
                       onChange={(e) => setDonorInfo({...donorInfo, phone: e.target.value})}
+                      placeholder="Enter your phone number"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-wynGreen-500 focus:border-transparent"
                     />
                   </div>
@@ -265,23 +266,23 @@ const Donation = () => {
                   <ul className="text-left space-y-2 text-gray-700">
                     <li className="flex items-start">
                       <span className="text-wynGreen-500 mr-2">💚</span>
-                      Transform food waste into life-saving meals for hungry animals
+                      Every rescued meal becomes hope for a hungry animal waiting for love
                     </li>
                     <li className="flex items-start">
                       <span className="text-wynGreen-500 mr-2">🐕</span>
-                      Give abandoned and stray pets a chance at survival and happiness
+                      Your kindness gives abandoned souls a second chance at happiness and health
                     </li>
                     <li className="flex items-start">
                       <span className="text-wynGreen-500 mr-2">🌍</span>
-                      Protect our planet by reducing restaurant food waste significantly
+                      Together we heal our planet while nurturing the most vulnerable creatures
                     </li>
                     <li className="flex items-start">
                       <span className="text-wynGreen-500 mr-2">❤️</span>
-                      Build a compassionate community where every life matters
+                      Join a community where compassion creates miracles for innocent animals
                     </li>
                     <li className="flex items-start">
                       <span className="text-wynGreen-500 mr-2">🌱</span>
-                      Create sustainable solutions for environmental conservation
+                      Your support builds a sustainable future where no animal goes hungry
                     </li>
                   </ul>
                 </CardContent>
