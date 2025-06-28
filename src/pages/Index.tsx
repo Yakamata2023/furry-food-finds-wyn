@@ -47,6 +47,7 @@ const Index = () => {
 
       {authMode && (
         <AuthModal
+          isOpen={!!authMode}
           mode={authMode}
           onClose={handleCloseAuth}
           onSwitchMode={(mode) => setAuthMode(mode)}
