@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Home, Heart, Info, Mail } from "lucide-react";
+import { Menu, X, Home, Heart, Info, Mail, Gamepad2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const RetractableMenu = () => {
@@ -9,6 +9,7 @@ const RetractableMenu = () => {
 
   const menuItems = [
     { title: "Home", icon: Home, path: "/" },
+    { title: "Play Game", icon: Gamepad2, path: "/game" },
     { title: "Donate", icon: Heart, path: "/donate" },
     { title: "About", icon: Info, path: "/about" },
     { title: "Contact", icon: Mail, path: "/contact" },
