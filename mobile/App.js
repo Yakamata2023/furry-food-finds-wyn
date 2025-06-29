@@ -1,32 +1,50 @@
+
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { View, Text, Button, ActivityIndicator } from 'react-native';
+import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import firebaseConfig from './firebaseConfig';
 
+// Complete the auth session for web browser
 WebBrowser.maybeCompleteAuthSession();
 
-// Initialise Firebase once
-initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
 const Drawer = createDrawerNavigator();
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Welcome to WYN Remnants</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome to WYN Remnants</Text>
+      <Text style={styles.subtitle}>Furry Food Finds</Text>
     </View>
   );
 }
 
 function Loading() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ActivityIndicator size="large" />
+    <View style={styles.container}>
+      <ActivityIndicator size="large" color="#0000ff" />
+      <Text style={styles.loadingText}>Loading...</Text>
+    </View>
+  );
+}
+
+function SignInScreen({ onSignIn }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>WYN Remnants</Text>
+      <Text style={styles.subtitle}>Sign in to continue</Text>
+      <Button
+        title="Sign in with Google"
+        onPress={onSignIn}
+      />
     </View>
   );
 }
@@ -40,22 +58,25 @@ export default function App() {
 
   const [user, setUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
-  const auth = getAuth();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (usr) => {
+    const unsubscribe = onAuthStateChanged(auth, (usr) => {
       setUser(usr);
-      setInitializing(false);
+      if (initializing) setInitializing(false);
     });
-    return unsub;
-  }, []);
+    return unsubscribe;
+  }, [initializing]);
 
   // Handle Google OAuth response
   useEffect(() => {
     if (response?.type === 'success') {
       const { id_token } = response.params;
-      const cred = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, cred).catch(console.error);
+      if (id_token) {
+        const credential = GoogleAuthProvider.credential(id_token);
+        signInWithCredential(auth, credential).catch((error) => {
+          console.error('Sign in error:', error);
+        });
+      }
     }
   }, [response]);
 
@@ -63,25 +84,64 @@ export default function App() {
 
   if (!user) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ marginBottom: 20 }}>Sign in to continue</Text>
-        <Button
-          disabled={!request}
-          title="Sign in with Google"
-          onPress={() => {
+      <SignInScreen 
+        onSignIn={() => {
+          if (request) {
             promptAsync();
-          }}
-        />
-      </View>
+          }
+        }} 
+      />
     );
   }
 
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        {/* Additional screens/features can be added here */}
+      <Drawer.Navigator 
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#4CAF50',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      >
+        <Drawer.Screen 
+          name="Home" 
+          component={HomeScreen}
+          options={{
+            title: 'WYN Remnants'
+          }}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+  },
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: '#666',
+    textAlign: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    color: '#666',
+  },
+});
