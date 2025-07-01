@@ -51,9 +51,9 @@ function SignInScreen({ onSignIn }) {
 
 export default function App() {
   const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
-    iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
-    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
+    expoClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || "demo-client-id",
+    iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID || "demo-ios-client-id",
+    androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID || "demo-android-client-id",
   });
 
   const [user, setUser] = useState(null);
