@@ -1,0 +1,13 @@
+
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+apply from: 'capacitor.settings.gradle'
+
+include ':app'
+rootProject.name = 'WYN Remnants'
